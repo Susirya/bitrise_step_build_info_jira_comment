@@ -9,7 +9,7 @@ magenta=$'\e[35m'
 cyan=$'\e[36m'
 reset=$'\e[0m'
 
-MERGES=$(git log $(git merge-base --octopus $(git log -1 --merges --pretty=format:%P))..$(git log -1 --merges --pretty=format:%H) --pretty=format:%s)
+MERGES=$(git log $(git merge-base --octopus $(git log -1 --merges --pretty=format:%P))..$(git log -1 --merges --pretty=format:%H) --pretty=format:%B)
 
 SAVEDIFS=$IFS
 IFS=$'\n'
@@ -18,7 +18,8 @@ MERGES=($MERGES)
 
 IFS=$SAVEDIFS
 
-LAST_COMMIT=$(git log -1 --pretty=format:%s)
+LAST_COMMIT=$(git log -1 --pretty=format:%B)
+LAST_COMMIT_SUBJECT=$(git log -1 --pretty=format:%s)
 
 TASKS=()
 
@@ -37,7 +38,7 @@ then
 
 	echo "${reset}"
 
-	if [ "$LAST_COMMIT" = "${MERGES[0]}" ];
+	if [ "$LAST_COMMIT_SUBJECT" = "${MERGES[0]}" ];
 	then
 		echo "${green}✅ Merge commit detected. Searching for tasks in merge commits messages...${cyan}"
 		for (( i=0 ; i<${#MERGES[*]} ; ++i ))
@@ -45,7 +46,7 @@ then
 			echo $'\t'"📜 "${MERGES[$i]}
 		done
 
-		for task in $(echo $MERGES | grep "$project_prefix[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
+		for task in $(echo ${MERGES[*]} | grep "$project_prefix[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
 		do
 			TASKS+=($task)
 		done
@@ -53,7 +54,7 @@ then
 		echo "${magenta}☑️  Not a merge commit. Searching for tasks in current commit message...${cyan}"
 		echo
 		echo $'\t'"📜 "$LAST_COMMIT "${reset}"
-		
+
 		for task in $(echo $LAST_COMMIT | grep "$project_prefix[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
 		do
 			TASKS+=($task)
