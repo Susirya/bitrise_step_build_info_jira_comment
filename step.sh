@@ -62,7 +62,17 @@ then
 	fi
 fi
 
+echo "${reset}"
+echo "${blue}📙  Tasks:${reset}"
+echo "${TASKS[*]}"
+echo "${green}⚙  Removing duplicates:${reset}"
+TASKS=($(printf '%s\n' "${TASKS[@]}" | sort -u ))
+echo "${TASKS[*]}"
+echo "${reset}"
+
 echo "${blue}✉️  Comment:${cyan}"
+echo "$jira_comment"
+echo "${reset}"
 
 escaped_jira_comment=$(echo "$jira_comment" | perl -pe 's/\n/\\n/g' | sed 's/.\{2\}$//')
 
