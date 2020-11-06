@@ -18,10 +18,22 @@ MERGES=($MERGES)
 
 IFS=$SAVEDIFS
 
+SAVEDIFS=$IFS
+IFS=$'|'
+
+PROJECT_PREFIXES=($project_prefix)
+
+IFS=$SAVEDIFS
+
 LAST_COMMIT=$(git log -1 --pretty=format:%B)
 LAST_COMMIT_SUBJECT=$(git log -1 --pretty=format:%s)
 
 TASKS=()
+
+
+echo "${green}⚙  PROJECT_PREFIXES:${reset}"
+printf '%s\n' "${PROJECT_PREFIXES[@]}"
+echo "${reset}"
 
 echo "${blue}⚡ ️Last commit:${cyan}"
 echo $'\t'"📜 "$LAST_COMMIT
@@ -45,20 +57,26 @@ then
 		do
 			echo $'\t'"📜 "${MERGES[$i]}
 		done
+    for (( i=0 ; i<${#PROJECT_PREFIXES[*]} ; ++i ))
+    do
+      for task in $(echo ${MERGES[*]} | grep "${PROJECT_PREFIXES[$i]}[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
+      do
+        TASKS+=($task)
+      done
+    done
 
-		for task in $(echo ${MERGES[*]} | grep "$project_prefix[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
-		do
-			TASKS+=($task)
-		done
 	else
 		echo "${magenta}☑️  Not a merge commit. Searching for tasks in current commit message...${cyan}"
 		echo
 		echo $'\t'"📜 "$LAST_COMMIT "${reset}"
 
-		for task in $(echo $LAST_COMMIT | grep "$project_prefix[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
-		do
-			TASKS+=($task)
-		done
+    for (( i=0 ; i<${#PROJECT_PREFIXES[*]} ; ++i ))
+    do
+      for task in $(echo $LAST_COMMIT | grep "${PROJECT_PREFIXES[$i]}[0-9]{1,5}" -E -o || true | sort -u -r --version-sort)
+      do
+        TASKS+=($task)
+      done
+    done
 	fi
 fi
 

@@ -70,7 +70,7 @@ inputs:
     opts:
       title: "Jira project prefix"
       description: |
-        Project prefix to search for tasks.
+        Project prefix to search for tasks separatad with `|`.
         
         e.g. "PROJ-"
       is_expand: true
