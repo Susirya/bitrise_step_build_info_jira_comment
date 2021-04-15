@@ -92,7 +92,12 @@ echo "${blue}✉️  Comment:${cyan}"
 echo "$jira_comment"
 echo "${reset}"
 
-escaped_jira_comment=$(echo "$jira_comment" | perl -pe 's/\n/\\n/g' | sed 's/.\{2\}$//')
+escaped_jira_comment=$(echo "$jira_comment" | perl -pe 's/\n/\\n/g' | sed 's/"/'\''/g' | sed 's/.\{2\}$//')
+
+
+echo "${blue}✉️ Escaped comment:${cyan}"
+echo "$escaped_jira_comment"
+echo "${reset}"
 
 create_comment_data()
 {
