@@ -2,6 +2,11 @@
 
 set -e
 
+# debug log
+if [ "${show_debug_logs}" == "yes" ]; then
+  set -x
+fi
+
 red=$'\e[31m'
 green=$'\e[32m'
 blue=$'\e[34m'

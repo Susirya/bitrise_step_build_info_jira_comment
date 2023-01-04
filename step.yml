@@ -105,3 +105,12 @@ inputs:
     opts:
       title: "Comment"
       description: "Comment that will be posted for each found Jira task"
+  - show_debug_logs: "no"
+    opts:
+      category: Debug
+      title: "Show debug logs?"
+      description: |
+        If debug=yes the step will print debug infos
+      value_options:
+        - "no"
+        - "yes"
