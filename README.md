@@ -1,9 +1,16 @@
-# Jira Comments
+# Jira Integration
 
-To be added
+A simple step collected from available online steps.
+Step does the following: 
+ - pulls all available issue codes (PROJ-XXXX) from MR git history 
+ - sends REST calls to defined Jira server to make the following for ALL found issues:
+ - - change specified field value
+ - - add specified Comment
+ - - shift Status from specified initial to specified target state.
 
 
 ## How to use this Step
+### SEE `steps.yml` for `inputs`
 
 Can be run directly with the [bitrise CLI](https://github.com/bitrise-io/bitrise),
 just `git clone` this repository, `cd` into it's folder in your Terminal/Command Line

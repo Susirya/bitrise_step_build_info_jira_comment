@@ -66,9 +66,9 @@ toolkit:
 
 
 inputs:
-  - project_prefix:
+  - jira_project_prefixes:
     opts:
-      title: "Jira project prefix"
+      title: "Jira project prefixes"
       description: |
         Project prefix to search for tasks separatad with `|`.
         
@@ -76,13 +76,14 @@ inputs:
       is_expand: true
       is_required: true
       value_options: []
-  - backlog_default_url:
+  - jira_domain:
     opts:
       title: "Jira domain"
       description: |
         Jira company domain.
       
         e.g. "example.atlassian.net"
+      is_sensitive: true
       is_expand: true
       is_required: true
   - jira_user:
@@ -93,6 +94,8 @@ inputs:
         
         e.g. "someone@example.pl"
       is_sensitive: true
+      is_expand: true
+      is_required: true
   - jira_token:
     opts:
       title: "Jira user token"
@@ -100,11 +103,55 @@ inputs:
         Jira user token used to authenticate with Jira API
         
         24 character string
-      is_sensitive: true  
+      is_sensitive: true
+      is_expand: true
+      is_required: true
   - jira_comment:
     opts:
       title: "Comment"
       description: "Comment that will be posted for each found Jira task"
+  - jira_issue_field_name:
+    opts:
+      title: "Jira issue field name"
+      summary: "The name of the field you want to update"
+#      is_required: true
+      description: |
+        The name of the field you want to update. This is the field name NOT field description.
+
+        To find the name of the field you need admin access to "Screens" page for your Jira project.
+  - jira_issue_field_value:
+    opts:
+      title: "Jira issue field value to update"
+      summary: "Value to update the issue field with."
+      is_required: true
+      description: |
+        Value to update the issue field with.
+        
+        Currently works only with simple string/number types
+  - jira_project_name: ""
+    opts:
+      title: "Jira project name"
+      summary: "Acronym used in Jira e.g. TEMP, GAS, TEST"
+      description: |
+        This will be used by script to determine tasks ids in git log e.g. TEST-123
+      is_expand: true
+#      is_required: true
+  - jira_from_status: "Peer Review"
+    opts:
+      title: "Initial status"
+      summary: "Initial status of tasks to be changed"
+      description: |
+        Initial status of tasks to be changed
+      is_expand: true
+#      is_required: true
+  - jira_to_status: "Merged"
+    opts:
+      title: "Target status"
+      summary: "Target status of tasks to be set"
+      description: |
+        Target status of tasks to be set
+      is_expand: true
+#      is_required: true
   - show_debug_logs: "no"
     opts:
       category: Debug
